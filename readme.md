@@ -1,1 +1,1 @@
-### Token Stacking Dapp
+### DeFi Application
