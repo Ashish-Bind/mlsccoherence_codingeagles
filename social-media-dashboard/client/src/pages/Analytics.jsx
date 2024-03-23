@@ -3,14 +3,47 @@ import { PieChart } from '@mui/x-charts/PieChart'
 import Table from '../components/Table'
 import VerticalBar from '../components/VerticalBar'
 import InfoCard from '../components/InfoCard'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function Analytics() {
+  const [channelData,setChannelData] = useState([])
+
   const data = [
     { name: 'Subscriber', unit: 1867 },
     { name: 'Watch time', unit: 1200 },
     { name: 'Impressions', unit: '400K' },
     { name: 'Performance', unit: '25%' },
   ]
+
+  useEffect(() => {
+    const fetchChannelData = async () => {
+      try {
+        const response = await fetch('/api/channel_data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `channel_id=${encodeURIComponent('UCYYhAzgWuxPauRXdPpLAX3Q')}`,
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch channel data');
+        }
+
+        const data = await response.json();
+        setChannelData(data);
+        setError(null);
+      } catch (error) {
+        setChannelData(null);
+        setError(error.message);
+      }
+    };
+
+    fetchChannelData();
+  }, []);
+
+  console.log(channelData)
 
   return (
     <div className="space-y-2 m-4">

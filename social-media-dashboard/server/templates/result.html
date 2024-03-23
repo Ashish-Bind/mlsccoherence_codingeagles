@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Result</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Analytics Result for {{ channel_stats['Channel_name'] }}</h1>
+        <p><strong>Subscribers:</strong> {{ channel_stats['Subscribers'] }}</p>
+        <p><strong>Views:</strong> {{ channel_stats['Views'] }}</p>
+        <p><strong>Total Videos:</strong> {{ channel_stats['Total_videos'] }}</p>
+        <h2 class="mt-5">Most Viewed Video</h2>
+        <p><strong>Title:</strong> {{ most_viewed_video_stats['Video_title'] }}</p>
+        <p><strong>Views:</strong> {{ most_viewed_video_stats['Views'] }}</p>
+        <p><strong>Likes:</strong> {{ most_viewed_video_stats['Likes'] }}</p>
+        <p><strong>Dislikes:</strong> {{ most_viewed_video_stats['Dislikes'] }}</p>
+        <p><strong>Comments:</strong> {{ most_viewed_video_stats['Comments'] }}</p>
+        <h2 class="mt-5">Most Recent Video</h2>
+        <p><strong>Title:</strong> {{ most_recent_video_stats['Video_title'] }}</p>
+        <p><strong>Views:</strong> {{ most_recent_video_stats['Views'] }}</p>
+        <p><strong>Likes:</strong> {{ most_recent_video_stats['Likes'] }}</p>
+        <p><strong>Dislikes:</strong> {{ most_recent_video_stats['Dislikes'] }}</p>
+        <p><strong>Comments:</strong> {{ most_recent_video_stats['Comments'] }}</p>
+    </div>
+</body>
+</html>
