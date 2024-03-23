@@ -1,8 +1,12 @@
+require('dotenv').config()
+
 const express = require('express')
 const cors = require('cors')
 const passport = require('passport')
 const InstagramStrategy = require('passport-instagram').Strategy
 const session = require('express-session')
+const { authenticate } = require('@google-cloud/local-auth')
+const { google } = require('googleapis')
 
 const app = express()
 
@@ -12,42 +16,18 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(express.urlencoded({ extended: true }))
 
-passport.serializeUser((user, done) => {
-  done(null, user)
+app.get('/get-data', (req, res) => {
+  const video = google.youtube('v3')
+  const details = video.channels.list({})
+  res.json(details)
 })
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj)
-})
-
-passport.use(
-  new InstagramStrategy(
-    {
-      clientID: '1132455621276257',
-      clientSecret: '31650d73e9db2f218e9f041145be8eff',
-      callbackURL: 'http://localhost:3000/auth/instagram/callback',
-    },
-    (accessToken, refreshToken, profile, done) => {
-      return done(null, profile)
-    }
-  )
-)
-
-app.get('/auth/instagram', passport.authenticate('instagram'))
-
-app.get(
-  '/auth/instagram/callback',
-  passport.authenticate('instagram', { failureRedirect: '/' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/')
-  }
-)
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the SocialSight Dashboard!')
+  res.json('ok')
 })
 
-const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`Server running on port ${port}`))
+app.listen(3000, () => {
+  console.log('Server started')
+})
