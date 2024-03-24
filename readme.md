@@ -5,3 +5,5 @@
 - Total subscribers, views and videos
 - Recent videos
 - Popular videos
+
+Our project is in /socia-media-dashboard folder, we have changed our domain from Blockchain to Web Development
