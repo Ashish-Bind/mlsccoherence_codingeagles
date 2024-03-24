@@ -72,7 +72,7 @@ export default function Analytics() {
         <form onSubmit={handleSubmit}>
           <TextField
             id="outlined-basic"
-            label="Channel ID"
+            label="Youtube Channel ID"
             variant="outlined"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
