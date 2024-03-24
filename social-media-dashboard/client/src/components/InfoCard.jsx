@@ -4,9 +4,9 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { CardActionArea } from '@mui/material'
 
-export default function InfoCard({ name, unit }) {
+export default function InfoCard({ name, unit, minWidth = 275 }) {
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: minWidth }}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

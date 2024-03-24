@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from googleapiclient.discovery import build
+from flask_cors import CORS
 import pandas as pd
 import seaborn as sns
 import matplotlib
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Set up the Flask application
 app = Flask(__name__)
-
+CORS(app)
 # Your API key
 api_key = 'AIzaSyCL7embBTo1pBaA6o9a4cIgKMkFOzQTltY'
 
@@ -82,7 +83,7 @@ def index():
 @app.route('/api/channel_data', methods=['GET', 'POST'])
 def get_channel_data():
     if request.method == 'POST':
-        channel_id = request.form['channel_id']
+        channel_id = request.json['channel_id']
         youtube = youtube_build()
         channel_stats = get_channel_stats(youtube, channel_id)
         if channel_stats:

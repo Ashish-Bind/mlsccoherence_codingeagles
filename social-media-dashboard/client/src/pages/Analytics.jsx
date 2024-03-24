@@ -7,51 +7,96 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 export default function Analytics() {
-  const [channelData,setChannelData] = useState([])
+  const [channelData, setChannelData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [recentVideos, setRecentVideos] = useState([])
+  const [popularVideos, setPopularVideos] = useState([])
+  const [error, setError] = useState(null)
 
-  const data = [
-    { name: 'Subscriber', unit: 1867 },
-    { name: 'Watch time', unit: 1200 },
-    { name: 'Impressions', unit: '400K' },
-    { name: 'Performance', unit: '25%' },
-  ]
+  const fetchChannelData = async () => {
+    setLoading(true)
+    try {
+      const res = await axios.get(
+        'http://localhost:3000/get-data?search_query=UCmXmlB4-HJytD7wek0Uo97A'
+      )
+      setChannelData(res.data)
+    } catch (err) {
+      alert('Something went wrong')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchRecentVideos = async () => {
+    setLoading(true)
+    try {
+      const res = await axios.get(
+        'http://localhost:3000/recent-videos?search_query=UCmXmlB4-HJytD7wek0Uo97A'
+      )
+      setRecentVideos(res.data)
+    } catch (err) {
+      alert('Something went wrong')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchPopularVideos = async () => {
+    setLoading(true)
+    try {
+      const res = await axios.get(
+        'http://localhost:3000/popular-videos?search_query=UCmXmlB4-HJytD7wek0Uo97A'
+      )
+      setPopularVideos(res.data)
+    } catch (err) {
+      alert('Something went wrong')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const fetchChannelData = async () => {
-      try {
-        const response = await fetch('/api/channel_data', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `channel_id=${encodeURIComponent('UCYYhAzgWuxPauRXdPpLAX3Q')}`,
-        });
+    fetchChannelData()
+    fetchRecentVideos()
+    fetchPopularVideos()
+  }, [])
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch channel data');
-        }
+  console.log(recentVideos, popularVideos)
 
-        const data = await response.json();
-        setChannelData(data);
-        setError(null);
-      } catch (error) {
-        setChannelData(null);
-        setError(error.message);
-      }
-    };
-
-    fetchChannelData();
-  }, []);
-
-  console.log(channelData)
-
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="space-y-2 m-4">
       <div className="flex gap-2 justify-center my-2">
-        {data.map((item) => (
-          <InfoCard name={item.name} key={item.name} unit={item.unit} />
-        ))}
+        <InfoCard
+          name={channelData.items[0].snippet.localized.title}
+          unit={channelData.items[0].snippet.localized.description}
+          minWidth={1100}
+        />
       </div>
+      <div className="flex gap-2 justify-center my-2">
+        <InfoCard
+          name={'View Count'}
+          key={channelData.items[0].statistics.viewCount}
+          unit={channelData.items[0].statistics.viewCount}
+        />
+        <InfoCard
+          name={'Subscriber Count'}
+          key={channelData.items[0].statistics.subscriberCount}
+          unit={channelData.items[0].statistics.subscriberCount}
+        />
+        <InfoCard
+          name={'Total No. of Videos'}
+          key={channelData.items[0].statistics.videoCount}
+          unit={channelData.items[0].statistics.videoCount}
+        />
+        <InfoCard
+          name={'Total No. of Videos'}
+          key={channelData.items[0].statistics.videoCount}
+          unit={channelData.items[0].statistics.videoCount}
+        />
+      </div>
+      <div></div>
       <div className="flex gap-2 justify-center">
         <div className="p-2 border w-max">
           <LineChart
