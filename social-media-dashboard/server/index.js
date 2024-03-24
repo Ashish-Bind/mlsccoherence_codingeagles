@@ -87,16 +87,41 @@ async function getMostPopularVideos(searchQuery) {
   }
 }
 
+async function getChannelRecentVideos(channelId) {
+  try {
+    const response = await youtube.search.list({
+      part: 'snippet',
+      maxResults: 10, // Adjust as needed
+      order: 'date',
+      channelId: channelId,
+    })
+
+    const videoIds = response.data.items
+      .map((item) => item.id.videoId)
+      .join(',')
+    const videosResponse = await youtube.videos.list({
+      part: 'snippet,statistics',
+      id: videoIds,
+    })
+
+    const videos = videosResponse.data.items
+    return videos
+  } catch (error) {
+    console.error('Error fetching recent videos:', error)
+    return []
+  }
+}
+
 app.get('/recent-videos', async (req, res) => {
   const searchQuery = req.query.search_query
-  const recentVideos = await getMostRecentVideos(searchQuery)
+  const recentVideos = await getChannelRecentVideos(searchQuery)
   res.json(recentVideos)
 })
 
 app.get('/popular-videos', async (req, res) => {
   const searchQuery = req.query.search_query
-  const popularVideos = await getMostPopularVideos(searchQuery)
-  res.json(popularVideos)
+  const channelRecentVideos = await getMostPopularVideos(searchQuery)
+  res.json(channelRecentVideos)
 })
 
 app.get('/', (req, res) => {

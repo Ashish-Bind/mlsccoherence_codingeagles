@@ -1,6 +1,9 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, redirect } from 'react-router-dom'
 
 const SignIn = () => {
+  const email = 'test@gmail.com'
+  const pass = '1234'
+
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -45,13 +48,12 @@ const SignIn = () => {
           </div>
 
           <div>
-            <button
-              type="submit"
-              onClick={(e) => handleSubmit(e)}
+            <a
+              href="/analytics"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
-            </button>
+            </a>
           </div>
         </form>
 

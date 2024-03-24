@@ -11,7 +11,7 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
-        <Route index element={<SignIn />} />
+        <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/connect" element={<ConnectPage />} />
         <Route path={`/analytics`} element={<Analytics />} />
